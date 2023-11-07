@@ -1,0 +1,35 @@
+必要 todos
+
+    做sign in跟user model 中的google認證
+
+    修改後要同步pull request的程式碼
+
+    整理程式碼
+
+    完成env example
+
+    修改product的價格為decimal
+
+    get部分可以不要複製貼上 直接移出來
+
+    amount沒有在資料庫上
+
+    整理完程式碼 pr merge進去後包進docker
+
+    custom error handler
+
+其他 todos
+import 時把副檔名去掉
+改全局路徑
+把 s3 移出去
+models 的 coding style 統一
+user 檢查重複 email, 重複名字
+修改 swagger create product 的格式 (要是 multipart/form-data)
+統一 error message
+
+目前 todos
+
+整理程式碼
+
+寫 payment 文檔
+做role

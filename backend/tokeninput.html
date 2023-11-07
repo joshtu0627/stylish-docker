@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JWT Token Input</title>
+  </head>
+  <body>
+    <h1>輸入JWT Token</h1>
+    <form id="jwt-form">
+      <input type="text" id="jwt-token" placeholder="請輸入JWT Token" />
+      <button type="button" id="submit-button">確認</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("submit-button")
+        .addEventListener("click", function () {
+          const jwtToken = document.getElementById("jwt-token").value;
+
+          fetch("https://13.236.23.10/api/1.0/admin/auth", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwtToken}`, // 将JWT令牌添加到Authorization头部
+            },
+            body: JSON.stringify({ token: jwtToken }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                const redirectUrl = `https://13.236.23.10/api/1.0/admin/checkout.html?token=${jwtToken}`;
+                // 执行重定向
+                window.location.href = redirectUrl;
+              } else {
+                throw new Error("请求失败");
+              }
+            })
+            .then((data) => {
+              console.log("请求成功", data);
+            })
+            .catch((error) => {
+              console.error("请求失败", error);
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+sign in 時會把google access token傳到後端
+後端使用get user info的api去google取得user info

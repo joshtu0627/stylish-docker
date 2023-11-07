@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>創建產品</title>
+</head>
+<body>
+    <h1>創建產品</h1>
+    <form action="http://127.0.0.1:8000/api/1.0/products/create" method="post" enctype="multipart/form-data">
+        <label for="main_image">主要圖像：</label>
+        <input type="file" name="main_image" id="main_image" required>
+        
+        <label for="images">其他圖像：</label>
+        <input type="file" name="images" id="images" multiple required>
+
+        <!-- 其他產品相關的輸入字段可以在這裡添加 -->
+
+        <input type="submit" value="提交">
+    </form>
+</body>
+</html>

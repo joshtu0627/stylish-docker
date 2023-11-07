@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>上傳產品資料</title>
+  </head>
+  <body>
+    <form action="http://127.0.0.1:8000/api/1.0/products/create" method="post" id="productForm" enctype="multipart/form-data">
+
+      <label for="category">Product Category (String):</label>
+      <input type="text" name="category" required /><br /><br />
+
+      <label for="title">Product Title (String):</label>
+      <input type="text" name="title" required /><br /><br />
+
+      <label for="description">Product Description (String):</label>
+      <textarea name="description" rows="4" required></textarea><br /><br />
+
+      <label for="price">Product Price (Number):</label>
+      <input type="number" name="price" required /><br /><br />
+
+      <label for="texture">Product Texture (String):</label>
+      <input type="text" name="texture" required /><br /><br />
+
+      <label for="wash">Wash Instructions (String):</label>
+      <input type="text" name="wash" required /><br /><br />
+
+      <label for="place">Place of Production (String):</label>
+      <input type="text" name="place" required /><br /><br />
+
+      <label for="note">Product Note (String):</label>
+      <input type="text" name="note" required /><br /><br />
+
+      <label for="story">Product Story (String):</label>
+      <textarea name="story" rows="4" required></textarea><br /><br />
+
+      <label for="colors">Colors (Array of Color Objects):</label>
+      <input type="text" name="colors" required /><br /><br />
+
+      <label for="sizes">Sizes (Array of Strings):</label>
+      <input type="text" name="sizes" required /><br /><br />
+
+      <label for="variants">Variants (Array of Variant Objects):</label>
+      <input type="text" name="variants" required /><br /><br />
+
+      <label for="main_image">Main Image (String):</label>
+      <input
+        type="file"
+        name="main_image"
+        accept="image/*"
+        required
+      /><br /><br />
+
+      <label for="images">Other Images (Array of Strings):</label>
+      <input
+        type="file"
+        id="imageInput"
+        name="images"
+        accept="image/*"
+        multiple
+      />
+      <label for="images">Other Images (Array of Strings):</label>
+      <input
+        type="file"
+        id="imageInput"
+        name="images"
+        accept="image/*"
+        multiple
+      />
+      <br /><br />
+
+      <!-- upload button -->
+    <button id="uploadButton">上傳</button>
+    </form>
+
+    <script>
+      // const imageInput = document.getElementById("imageInput");
+      // const addImageButton = document.getElementById("addImageButton");
+      // const selectedImages = document.getElementById("selectedImages");
+      // var selectedImageArr = [];
+
+      // addImageButton.addEventListener("click", () => {
+      //   const selectedImageList = document.createElement("ul");
+      //   console.log(imageInput.files);
+      //   selectedImageArr.push(imageInput.files[0]);
+      //   for (let i = 0; i < selectedImageArr.length; i++) {
+      //     const li = document.createElement("li");
+      //     li.textContent = selectedImageArr[i].name;
+      //     selectedImageList.appendChild(li);
+      //   }
+      //   selectedImages.innerHTML = "";
+      //   selectedImages.appendChild(selectedImageList);
+      // });
+
+      // //   upload button
+      // const uploadButton = document.getElementById("uploadButton");
+      // const productForm = document.getElementById("productForm");
+
+      // uploadButton.addEventListener("click", () => {
+      //   console.log(productForm);
+      //   const formData = new FormData(productForm);
+
+      //   // 將選擇的圖片添加到 formData
+      //   // for (const image of selectedImageArr) {
+      //   //   formData.append("images[]", image);
+      //   // }
+
+      //   // console.log(formData.get("id"));
+
+      //   // // 以json格式傳給伺服器
+      //   // let submitData = {};
+      //   // for (const [key, value] of formData.entries()) {
+      //   //   if (key === "colors" || key === "sizes" || key === "variants") {
+      //   //     submitData[key] = JSON.parse(value);
+      //   //   } else {
+      //   //     submitData[key] = value;
+      //   //   }
+      //   // } 
+
+      //   console.log(submitData);
+
+      //   // 發送 POST 請求到指定的伺服器端端點
+      //   fetch("http://127.0.0.1:8000/api/1.0/products/create", {
+      //     method: "POST",
+      //     body: submitData,
+      //     type: "multipart/form-data",
+      //   })
+      //     .then((response) => {
+      //       // 在這裡處理伺服器的回應，可以是重定向或顯示成功消息
+      //     })
+      //     .catch((error) => {
+      //       // 處理錯誤
+      //       console.error("上傳失敗:", error);
+      //     });
+      // });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 資料
+        const productData = {
+          category: "men",
+          title: "厚實毛呢格子外套",
+          description: "高抗寒素材選用，保暖也時尚有型",
+          price: 2200,
+          texture: "棉、聚脂纖維",
+          wash: "手洗（水溫40度",
+          place: "韓國",
+          note: "實品顏色以單品照為主",
+          story: "你絕對不能錯過的超值商品",
+          colors: [
+            {
+              code: "334455",
+              name: "深藍",
+            },
+            {
+              code: "FFFFFF",
+              name: "白色",
+            },
+          ],
+          sizes: ["S", "M"],
+          variants: [
+            {
+              color_code: "334455",
+              size: "S",
+              stock: 5,
+            },
+            {
+              color_code: "334455",
+              size: "M",
+              stock: 10,
+            },
+            {
+              color_code: "FFFFFF",
+              size: "S",
+              stock: 0,
+            },
+            {
+              color_code: "FFFFFF",
+              size: "M",
+              stock: 2,
+            },
+          ],
+        };
+
+        // 將資料填入表單
+       
+        document.querySelector('input[name="category"]').value =
+          productData.category;
+        document.querySelector('input[name="title"]').value = productData.title;
+        document.querySelector('textarea[name="description"]').value =
+          productData.description;
+        document.querySelector('input[name="price"]').value = productData.price;
+        document.querySelector('input[name="texture"]').value =
+          productData.texture;
+        document.querySelector('input[name="wash"]').value = productData.wash;
+        document.querySelector('input[name="place"]').value = productData.place;
+        document.querySelector('input[name="note"]').value = productData.note;
+        document.querySelector('textarea[name="story"]').value =
+          productData.story;
+
+        // 將顏色以json格式填入表單
+        const colorInput = document.querySelector('input[name="colors"]');
+
+        colorInput.value = JSON.stringify(productData.colors);
+
+        // 將尺寸以json格式填入表單
+        const sizeInput = document.querySelector('input[name="sizes"]');
+        sizeInput.value = JSON.stringify(productData.sizes);
+
+        // 將庫存以json格式填入表單
+        const variantInput = document.querySelector('input[name="variants"]');
+        variantInput.value = JSON.stringify(productData.variants);
+      });
+    </script>
+  </body>
+</html>

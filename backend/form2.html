@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Multer API</title>
+</head>
+<body>
+  <h1>Test Multer API</h1>
+  <form action="http://127.0.0.1:8000/api/1.0/products/test" method="post" enctype="multipart/form-data">
+    <label for="main_image">Main Image:</label>
+    <input type="file" name="main_image" id="main_image" required>
+    
+    <br>
+    
+    <label for="images">Images:</label>
+    <input type="file" name="images" id="images" multiple>
+    
+    <br>
+    
+    <input type="submit" value="Upload">
+  </form>
+</body>
+</html>

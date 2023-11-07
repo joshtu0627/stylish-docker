@@ -1,0 +1,770 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User API",
+    "description": "User API",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://127.0.0.1:8000/api/1.0",
+      "description": "Local server"
+    },
+    {
+      "url": "https://13.236.23.10/api/1.0",
+      "description": "AWS server"
+    }
+  ],
+
+  "paths": {
+    "/products/all": {
+      "get": {
+        "summary": "Get all products",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paging",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Paging for request next page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/women": {
+      "get": {
+        "summary": "Get all women products",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paging",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Paging for request next page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/men": {
+      "get": {
+        "summary": "Get all men products",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paging",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Paging for request next page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/accessories": {
+      "get": {
+        "summary": "Get all accessories products",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "paging",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Paging for request next page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/search": {
+      "get": {
+        "summary": "Get all accessories products",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Search keyword.",
+            "required": true,
+            "example": "外套"
+          },
+          {
+            "in": "query",
+            "name": "paging",
+            "schema": {
+              "type": "string",
+              "default": 1
+            },
+            "description": "Paging for request next page.",
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Product"
+                      },
+                      "description": "Array of Product Object."
+                    },
+                    "next_paging": {
+                      "type": "number",
+                      "description": "Next page number. If there are no more pages, server won't return next_paging parameter."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/details": {
+      "get": {
+        "summary": "Get product details",
+        "tags": ["Products"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "number",
+              "default": 1
+            },
+            "description": "Product Id.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/definitions/Product"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/products/create": {
+      "post": {
+        "contentType": "multipart/form-data",
+        "summary": "Create a new product",
+        "tags": ["Products"],
+        "consumes": ["multipart/form-data"],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "name": "category",
+                    "description": "Product category",
+                    "type": "string",
+                    "example": "men"
+                  },
+                  "title": {
+                    "name": "title",
+                    "description": "Product title.",
+                    "type": "string",
+                    "example": "厚實毛呢格子外套"
+                  },
+                  "description": {
+                    "name": "description",
+                    "description": "Product description.",
+                    "type": "string",
+                    "example": "高抗寒素材選用，保暖也時尚有型"
+                  },
+                  "price": {
+                    "name": "price",
+                    "description": "Product price.",
+                    "type": "number",
+                    "format": "double",
+                    "example": 2200
+                  },
+                  "texture": {
+                    "name": "texture",
+                    "description": "Product texture.",
+                    "type": "string",
+                    "example": "棉、聚脂纖維"
+                  },
+                  "wash": {
+                    "name": "wash",
+                    "description": "The way we can wash the product.",
+                    "type": "string",
+                    "example": "手洗（水溫40度）"
+                  },
+                  "place": {
+                    "name": "place",
+                    "description": "Place of production.",
+                    "type": "string",
+                    "example": "韓國"
+                  },
+                  "note": {
+                    "name": "note",
+                    "description": "The note of product.",
+                    "type": "string",
+                    "example": "實品顏色以單品照為主"
+                  },
+                  "story": {
+                    "name": "story",
+                    "description": "Product multiline story.",
+                    "type": "string",
+                    "example": "你絕對不能錯過的超值商品"
+                  },
+                  "colors": {
+                    "type": "string",
+                    "description": "Possible color choices.",
+                    "example": "[{\"code\":\"334455\",\"name\":\"深藍\"},{\"code\":\"FFFFFF\",\"name\":\"白色\"}]"
+                  },
+                  "sizes": {
+                    "type": "string",
+                    "description": "Possible size choices.",
+                    "example": "[\"S\",\"M\"]"
+                  },
+                  "variants": {
+                    "type": "string",
+                    "description": "Possible variants, including stock records.",
+                    "example": "[{\"color_code\":\"334455\",\"size\":\"S\",\"stock\":5},{\"color_code\":\"334455\",\"size\":\"M\",\"stock\":10},{\"color_code\":\"FFFFFF\",\"size\":\"S\",\"stock\":0},{\"color_code\":\"FFFFFF\",\"size\":\"M\",\"stock\":2}]"
+                  },
+                  "main_image": {
+                    "name": "main_image",
+                    "description": "Main image.",
+                    "type": "file"
+                  },
+                  "images": {
+                    "name": "images",
+                    "description": "Other images.",
+                    "type": "array",
+                    "items": {
+                      "type": "file"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Client error"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "contentType": "application/json",
+        "summary": "User Signup",
+        "tags": ["User"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "test"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "test@test.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "test"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful signup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "description": "Access token from server"
+                        },
+                        "access_expired": {
+                          "type": "number",
+                          "description": "Access token expired time in seconds"
+                        },
+                        "user": {
+                          "$ref": "#/definitions/User",
+                          "description": "User information"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                    "access_expired": 3600,
+                    "user": {
+                      "id": 11245642,
+                      "provider": "facebook",
+                      "name": "Pei",
+                      "email": "pei@appworks.tw",
+                      "picture": "https://schoolvoyage.ga/images/123498.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error"
+          },
+          "409": {
+            "description": "Email Already Exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/signin": {
+      "post": {
+        "contentType": "application/json",
+        "summary": "User Signin",
+        "tags": ["User"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "provider": {
+                    "type": "string",
+                    "description": "Account's provider",
+                    "example": "native"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "example": "test@test.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "User's password",
+                    "example": "test"
+                  },
+                  "access_token": {
+                    "type": "string",
+                    "description": "access token of the user",
+                    "example": "EAACEdEose0cBAHc6hv9kK8bMNs4XTrT0kVC1RgDZCVBptXW12AI"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful signin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "description": "Access token from server"
+                        },
+                        "access_expired": {
+                          "type": "number",
+                          "description": "Access token expired time in seconds"
+                        },
+                        "user": {
+                          "$ref": "#/definitions/User",
+                          "description": "User information"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+                    "access_expired": 3600,
+                    "user": {
+                      "id": 11245642,
+                      "provider": "facebook",
+                      "name": "Pei",
+                      "email": "pei@appworks.tw",
+                      "picture": "https://schoolvoyage.ga/images/123498.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error"
+          },
+          "409": {
+            "description": "Email Already Exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "contentType": "application/json",
+        "summary": "User profile",
+        "tags": ["User"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT token in the format 'Bearer <token>'",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get the profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "$ref": "#/components/schemas/User",
+                          "description": "User information"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": 11245642,
+                    "provider": "facebook",
+                    "name": "Pei",
+                    "email": "pei@appworks.tw",
+                    "picture": "https://schoolvoyage.ga/images/123498.png"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Client Error"
+          },
+          "409": {
+            "description": "Email Already Exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "Product id.",
+          "example": 1
+        },
+        "category": {
+          "type": "string",
+          "description": "Product category",
+          "example": "men"
+        },
+        "title": {
+          "type": "string",
+          "description": "Product title.",
+          "example": "厚實毛呢格子外套"
+        },
+        "description": {
+          "type": "string",
+          "description": "Product description.",
+          "example": "高抗寒素材選用，保暖也時尚有型"
+        },
+        "price": {
+          "type": "number",
+          "description": "Product price.",
+          "example": 2200
+        },
+        "texture": {
+          "type": "string",
+          "description": "Product texture.",
+          "example": "棉、聚脂纖維"
+        },
+        "wash": {
+          "type": "string",
+          "description": "The way we can wash the product.",
+          "example": "手洗（水溫40度"
+        },
+        "place": {
+          "type": "string",
+          "description": "Place of production.",
+          "example": "韓國"
+        },
+        "note": {
+          "type": "string",
+          "description": "The note of product.",
+          "example": "實品顏色以單品照為主"
+        },
+        "story": {
+          "type": "string",
+          "description": "Product multiline story.",
+          "example": "你絕對不能錯過的超值商品"
+        },
+        "colors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Color"
+          },
+          "description": "Possible color choices."
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Possible size choices."
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Variant"
+          },
+          "description": "Possible variants, including stock records."
+        },
+        "main_image": {
+          "type": "string",
+          "description": "Main image."
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Other images."
+        }
+      }
+    },
+    "Color": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Color's name.",
+          "example": "深藍"
+        },
+        "code": {
+          "type": "string",
+          "description": "Color's hex code.",
+          "example": "334455"
+        }
+      }
+    },
+    "Variant": {
+      "type": "object",
+      "properties": {
+        "color_code": {
+          "type": "string",
+          "description": "Hex Color Code.",
+          "example": "334455"
+        },
+        "size": {
+          "type": "string",
+          "description": "Size.",
+          "example": "S"
+        },
+        "stock": {
+          "type": "number",
+          "description": "Stock.",
+          "example": 5
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "description": "User's id.",
+          "example": 1
+        },
+        "provider": {
+          "type": "string",
+          "description": "Service provider.",
+          "example": "facebook"
+        },
+        "name": {
+          "type": "string",
+          "description": "User's name.",
+          "example": "Josh"
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email.",
+          "example": "123@gmail.com"
+        },
+        "picture": {
+          "type": "string",
+          "description": "User's picture link.",
+          "example": "https://schoolvoyage.ga/images/123498.png"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+controller 要把資料從請求分開來 再把 service 要的資料給他 不要直接給 req
+
+    付款流程
+
+Receive prime and order data from front-end.
+Create an unpaid order record and also the order deatails in the database.
+Send prime and other necessary data to TapPay server for payment processing.
+Receive payment result from TapPay server.
+If payment is successful, create a payment record in the database and update
+existed unpaid order record to paid. Otherwise, send payment error message to front-end.
+
+js import 順序
+
+1. 標準庫、第三方庫、框架
+2. 自己寫 module 或文件
+3. 引入其他資源，如 css、圖片等
+
+signup 不負責做 google 登入?
+
+280210011927-2q2pjiru61te3s3bg4stfgjmmd8gpcs9.apps.googleusercontent.com
+
+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
+
+google 能做的事就只有給你 profile，然後你要自己去幫用戶建立帳號，然後把帳號跟 google 的 profile 連結起來

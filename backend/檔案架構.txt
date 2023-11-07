@@ -1,0 +1,26 @@
+src
+├── index.js
+├── config
+│   ├── db.config.js
+│   ├── payment.config.js
+│   ├── s3.config.js
+├── controllers
+│   ├── product.controller.js
+│   ├── user.controller.js
+│   ├── payment.controller.js
+├── middlewares
+│   ├── auth.middleware.js
+├── models
+│   ├── product.model.js
+│   ├── user.model.js
+│   ├── payment.model.js
+├── routes
+│   ├── index.js
+│   ├── product.routes.js
+│   ├── user.routes.js
+│   ├── payment.routes.js
+│   ├── docs.routes.js
+├── services
+│   ├── payment.service.js
+├── utils
+│   ├── env.js

@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@/*": ["*"]
+      }
+    },
+    "include": ["src/*"] // 這裡設置了您專案中 JavaScript 文件的路徑
+  }
+  

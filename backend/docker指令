@@ -1,0 +1,8 @@
+sudo docker system prune -a
+ sudo docker run -p 8000:8000 demo-stylish:v3
+ sudo docker build -t demo-stylish:v3 .
+docker exec -it 69d1 bash
+sudo docker container ls
+sudo docker image ls 
+sudo docker container stop b159
+sudo docker run -p 8000:8000 -v myvol:/usr/bruh/ demo-stylish:v3
