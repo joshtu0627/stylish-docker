@@ -17,7 +17,9 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
 
   useEffect(() => {
     if (selectInfo[0] === 0) {
-      fetch(`https://13.236.23.10/api/1.0/products/${selectInfo[1]}?paging=0`)
+      fetch(
+        `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=0`
+      )
         .then((res) => res.json())
         .then((data) => {
           console.log(data.data);
