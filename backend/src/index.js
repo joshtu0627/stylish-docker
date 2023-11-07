@@ -24,16 +24,7 @@ const swaggerDocument = require("./swagger.json");
 import "./config/passport.config.js";
 import { env } from "./utils/env.js";
 
-// set up https server
-const options = {
-  key: fs.readFileSync("./ssl/private.key"),
-  cert: fs.readFileSync("./ssl/certificate.crt"),
-  ca: fs.readFileSync("./ssl/ca_bundle.crt"),
-};
-
 const app = express();
-
-const server = https.createServer(options, app);
 
 // enable session
 app.use(
@@ -72,7 +63,7 @@ app.use(
   }
 );
 
-server.listen(8000, () => {
+app.listen(8000, () => {
   console.log(env.SECRET_KEY);
   console.log("Server is running on port https://127.0.0.1:8000/api/1.0");
   console.log();
