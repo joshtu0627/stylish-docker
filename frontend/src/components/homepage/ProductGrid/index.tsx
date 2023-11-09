@@ -18,6 +18,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
   useEffect(() => {
     if (selectInfo[0] === 0) {
       fetch(
+        // `https://127.0.0.1:8000/api/1.0/products/${selectInfo[1]}?paging=0`
         `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=0`
       )
         .then((res) => res.json())
@@ -32,6 +33,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
       // translate the keyword to url format
 
       fetch(
+        // `https://127.0.0.1:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=0`
         `https://13.236.23.10:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=0`
       )
         .then((res) => res.json())
