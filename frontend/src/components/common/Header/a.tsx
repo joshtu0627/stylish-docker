@@ -31,7 +31,7 @@ export default function Header({
             ""
           )}
 
-          {windowWidth > 480 ? (
+          {windowWidth > 1280 ? (
             <>
               <div
                 className="mx-10"
@@ -55,7 +55,7 @@ export default function Header({
             ""
           )}
         </div>
-        {windowWidth < 480 ? (
+        {windowWidth < 1280 ? (
           <div
             className="top-0 inset-y-0 right-3 items-center pl-3 mr-5"
             onClick={() => {
@@ -85,7 +85,7 @@ export default function Header({
         ) : (
           <></>
         )}
-        {windowWidth > 480 ? (
+        {windowWidth > 1280 ? (
           <div className="flex-1 flex justify-end mx-5  cursor-pointer-bar">
             <div className="relative">
               {/* search text field */}
@@ -150,7 +150,7 @@ export default function Header({
       </header>
 
       <div className="h-8 bg-black flex items-center text-white text-sm text-gray-400  cursor-pointer-bar">
-        {windowWidth < 480 ? (
+        {windowWidth < 1280 ? (
           <>
             <div className="mx-10" onClick={() => onSelectChange([0, "women"])}>
               女&nbsp;&nbsp;&nbsp;裝

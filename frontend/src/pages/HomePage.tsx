@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Header from "../components/common/Header";
 import Banner from "../components/homepage/Banner";
@@ -13,6 +13,9 @@ export default function HomePage() {
   const handleSelectChange = (selectInfo: [number, string]) => {
     setSelectInfo(selectInfo);
   };
+  useEffect(() => {
+    console.log("start");
+  }, []);
 
   return (
     <>

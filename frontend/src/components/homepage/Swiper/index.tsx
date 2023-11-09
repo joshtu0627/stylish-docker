@@ -32,18 +32,26 @@ const SwiperSlideBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  position: absolute;
+  bottom: 0.5rem;
 `;
 
-const SwiperSlideBarItem: any = styled.div`
+const SwiperSlideBarItem = styled.div`
   cursor: pointer;
-  width: ${(props: any) => (props.isActive ? "26px" : "16px")};
-  height: 4px;
-  background: #fff;
+  width: 10px; /* 调整宽度 */
+  height: 10px; /* 调整高度 */
+  background: #cccccc; /* 设置默认背景颜色 */
+  border: none; /* 去掉边框 */
+  border-radius: 50%; /* 圆形形状 */
   margin-right: 6px;
-  border-radius: 2px;
-  border: 1px solid black;
   z-index: 100;
+
+  /* 根据isActive属性设置活动点的样式 */
+  ${(props: any) =>
+    props.isActive &&
+    `
+    background: #fff; /* 活动点的背景颜色 */
+  `}
 `;
 
 export default function Swiper({
@@ -67,8 +75,8 @@ export default function Swiper({
   const swiperContainerRef = useRef<HTMLDivElement>(null);
 
   const startPlaySwiper = () => {
-    console.log("speed", speed);
-    console.log(width);
+    // console.log("speed", speed);
+    // console.log(width);
 
     if (speed <= 0) return;
     timer.current = setInterval(() => {
@@ -94,7 +102,7 @@ export default function Swiper({
   useEffect(() => {
     const swiper = document.querySelector("#swiper-container") as any;
 
-    console.log("swiper", swiper);
+    // console.log("swiper", swiper);
 
     // 根据用户传入的轮播方向，决定是在bottom上变化还是right变化
     if (direction === "vertical") {
@@ -104,9 +112,9 @@ export default function Swiper({
         : `${activeIndex * +height}px`;
     } else {
       swiper.style.right = `${activeIndex * +width}px`;
-      console.log("width", width);
+      // console.log("width", width);
 
-      console.log(swiper.style.right);
+      // console.log(swiper.style.right);
     }
     // 判断如果到达最后一张，停止自动轮播
     if (activeIndex >= urls.length) {
@@ -115,17 +123,17 @@ export default function Swiper({
       // timer.current = null;
       // setDone(true);
     }
-    console.log("activeIndex", activeIndex);
+    // console.log("activeIndex", activeIndex);
   }, [activeIndex, urls]);
 
   return (
     <>
-      <MainSwiper style={{ width, height }}>
+      <MainSwiper style={{ width: "100%" }}>
         <SwiperContainer
           ref={swiperContainerRef}
           id="swiper-container"
           style={{
-            height,
+            height: "auto",
             width,
             flexDirection: direction === "vertical" ? "column" : "row",
           }}
@@ -145,15 +153,22 @@ export default function Swiper({
             </SwiperSlide>
           ))}
         </SwiperContainer>
+        <SwiperSlideBar>
+          {urls?.map((f: string, index: number) => (
+            <SwiperSlideBarItem
+              onClick={() => slideToOne(index)}
+              isActive={index === activeIndex}
+              onMouseEnter={() => {
+                clearInterval(timer?.current);
+                timer.current = null;
+              }}
+              onMouseLeave={() => {
+                startPlaySwiper();
+              }}
+            ></SwiperSlideBarItem>
+          ))}
+        </SwiperSlideBar>
       </MainSwiper>
-      <SwiperSlideBar>
-        {urls?.map((f: string, index: number) => (
-          <SwiperSlideBarItem
-            onClick={() => slideToOne(index)}
-            isActive={index === activeIndex}
-          ></SwiperSlideBarItem>
-        ))}
-      </SwiperSlideBar>
     </>
   );
 }

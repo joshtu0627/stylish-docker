@@ -28,7 +28,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
           setProducts(data.data);
         });
     } else {
-      console.log(selectInfo[1]);
+      // console.log(selectInfo[1]);
 
       // translate the keyword to url format
 
@@ -43,13 +43,14 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
           setProducts(data.data);
         });
     }
+    console.log("windowwidth in grid: ", windowWidth);
   }, [selectInfo[0], selectInfo[1]]);
   return (
-    <div className="my-8 flex justify-center mx-5">
-      <div className={windowWidth > 1280 ? "w-3/5" : ""}>
+    <div className="my-16 flex justify-center w-full">
+      <div className={windowWidth > 1280 ? "w-4/5" : ""}>
         <div
           className={
-            "grid gap-4" + (windowWidth > 480 ? " grid-cols-3" : " grid-cols-2")
+            "grid " + (windowWidth > 1280 ? " grid-cols-3" : " grid-cols-2")
           }
         >
           {products.map((product) => (

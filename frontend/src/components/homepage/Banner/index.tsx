@@ -11,9 +11,9 @@ export default function Banner() {
     <>
       <Swiper
         direction={"horizontal"}
-        speed={3}
+        speed={5}
         width={windowWidth}
-        height={200}
+        height={300}
         urls={[
           "/assets/images/carousel-images/1.png",
           "/assets/images/carousel-images/1.png",
