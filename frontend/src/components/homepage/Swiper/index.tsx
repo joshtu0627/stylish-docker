@@ -16,6 +16,7 @@ const SwiperContainer = styled.div`
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
+  margin-top: 7rem;
 `;
 
 const SwiperSlide = styled.div`
@@ -38,19 +39,18 @@ const SwiperSlideBar = styled.div`
 
 const SwiperSlideBarItem = styled.div`
   cursor: pointer;
-  width: 10px; /* 调整宽度 */
-  height: 10px; /* 调整高度 */
-  background: #cccccc; /* 设置默认背景颜色 */
-  border: none; /* 去掉边框 */
-  border-radius: 50%; /* 圆形形状 */
+  width: 10px;
+  height: 10px;
+  background: #cccccc;
+  border: none;
+  border-radius: 50%;
   margin-right: 6px;
-  z-index: 100;
+  z-index: 25;
 
-  /* 根据isActive属性设置活动点的样式 */
   ${(props: any) =>
     props.isActive &&
     `
-    background: #fff; /* 活动点的背景颜色 */
+    background: #fff;
   `}
 `;
 
@@ -104,9 +104,7 @@ export default function Swiper({
 
     // console.log("swiper", swiper);
 
-    // 根据用户传入的轮播方向，决定是在bottom上变化还是right变化
     if (direction === "vertical") {
-      // 兼容用户输入百分比的模式
       swiper.style.bottom = (height as string)?.includes("%")
         ? `${activeIndex * +(height as string)?.replace("%", "")}vh`
         : `${activeIndex * +height}px`;
@@ -116,7 +114,6 @@ export default function Swiper({
 
       // console.log(swiper.style.right);
     }
-    // 判断如果到达最后一张，停止自动轮播
     if (activeIndex >= urls.length) {
       setActiveIndex(0);
       // clearInterval(timer?.current);
