@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import useWindowWidth from "../../../hooks/useWindowWidth";
 
@@ -24,6 +24,7 @@ export default function Header({
   return (
     <>
       {windowWidth > 1280 ? (
+        // desktop's header
         <div className="fixed top-0 w-full z-50 ">
           <header className="flex py-5 bg-white text-black h-20 w-full">
             {/* left side of the header */}
@@ -32,9 +33,10 @@ export default function Header({
                 <img src="/assets/images/icon-images/logo.png" alt="" />
               </div>
               <div
-                className="mx-5 animated-btn"
+                className="mx-5 animated-btn xl:ml-[3.5rem]"
                 onClick={() => onSelectChange([0, "women"])}
               >
+                {/* &nbsp; is for space */}
                 女&nbsp;&nbsp;&nbsp;裝
               </div>
               |
@@ -55,8 +57,6 @@ export default function Header({
 
             <div className="flex-1 flex justify-end mx-5  cursor-pointer-bar">
               <div className="relative">
-                {/* search text field */}
-
                 <input
                   type="text"
                   className="p-2 rounded-full border border-gray-300 focus:outline-none"

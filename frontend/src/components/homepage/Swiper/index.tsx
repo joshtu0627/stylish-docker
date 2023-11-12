@@ -102,25 +102,16 @@ export default function Swiper({
   useEffect(() => {
     const swiper = document.querySelector("#swiper-container") as any;
 
-    // console.log("swiper", swiper);
-
     if (direction === "vertical") {
       swiper.style.bottom = (height as string)?.includes("%")
         ? `${activeIndex * +(height as string)?.replace("%", "")}vh`
         : `${activeIndex * +height}px`;
     } else {
       swiper.style.right = `${activeIndex * +width}px`;
-      // console.log("width", width);
-
-      // console.log(swiper.style.right);
     }
     if (activeIndex >= urls.length) {
       setActiveIndex(0);
-      // clearInterval(timer?.current);
-      // timer.current = null;
-      // setDone(true);
     }
-    // console.log("activeIndex", activeIndex);
   }, [activeIndex, urls]);
 
   return (

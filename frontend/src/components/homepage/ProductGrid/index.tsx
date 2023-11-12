@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useInView } from "react-intersection-observer";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import ProductCard from "../ProductCard";
 import Product from "../../../types/Product";
@@ -8,56 +10,63 @@ type ProductGridProps = {
   selectInfo: [number, string];
 };
 
-export default function ProductGrid({ selectInfo }: ProductGridProps) {
-  // fetch backend to get product data
-  //   i am using typescript here
-  const [products, setProducts] = useState<Product[]>([]);
+async function fetchProducts(selectInfo: [number, string], pageParam: number) {
+  if (selectInfo[0] === 0) {
+    const response = await fetch(
+      `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=${pageParam}`
+    );
+    response.data = await response.json();
+    return response.data;
+  } else {
+    const response = await fetch(
+      `https://13.236.23.10:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=${pageParam}`
+    );
+    response.data = await response.json();
+    return response.data;
+  }
+}
 
+export default function ProductGrid({ selectInfo }: ProductGridProps) {
+  const { ref, inView } = useInView({
+    /* Optional options */
+    threshold: 0,
+  });
+  const { data, status, error, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["products", selectInfo],
+      queryFn: ({ pageParam = 0 }) => fetchProducts(selectInfo, pageParam),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) => lastPage.next_paging,
+    });
   const windowWidth = useWindowWidth();
 
   useEffect(() => {
-    if (selectInfo[0] === 0) {
-      fetch(
-        // `https://127.0.0.1:8000/api/1.0/products/${selectInfo[1]}?paging=0`
-        `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=0`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data.data);
-
-          setProducts(data.data);
-        });
-    } else {
-      // console.log(selectInfo[1]);
-
-      // translate the keyword to url format
-
-      fetch(
-        // `https://127.0.0.1:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=0`
-        `https://13.236.23.10:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=0`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data.data);
-
-          setProducts(data.data);
-        });
+    if (inView) {
+      fetchNextPage();
     }
-    console.log("windowwidth in grid: ", windowWidth);
-  }, [selectInfo[0], selectInfo[1]]);
+  }, [fetchNextPage, inView]);
+
   return (
-    <div className="my-16 flex justify-center w-full">
-      <div className={windowWidth > 1280 ? "w-4/5" : ""}>
-        <div
-          className={
-            "grid " + (windowWidth > 1280 ? " grid-cols-3" : " grid-cols-2")
-          }
-        >
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+    <>
+      <div className="my-16 flex justify-center w-full">
+        <div className={windowWidth > 1280 ? "w-4/5" : ""}>
+          <div
+            className={
+              "grid " + (windowWidth > 1280 ? "grid-cols-3" : " grid-cols-2")
+            }
+          >
+            {data?.pages.map((page, i) => (
+              <>
+                {page.data.map((product: Product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      {/* infinite scroll */}
+      <div ref={ref} />
+    </>
   );
 }

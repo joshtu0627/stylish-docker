@@ -13,6 +13,7 @@ export default function HomePage() {
   const handleSelectChange = (selectInfo: [number, string]) => {
     setSelectInfo(selectInfo);
   };
+
   useEffect(() => {
     console.log("start");
   }, []);

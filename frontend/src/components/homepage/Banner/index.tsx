@@ -1,7 +1,5 @@
-import { Carousel } from "react-responsive-carousel";
 import Swiper from "../Swiper";
 import useWindowWidth from "../../../hooks/useWindowWidth";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./index.css";
 
 export default function Banner() {

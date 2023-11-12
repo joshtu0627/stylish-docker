@@ -7,33 +7,34 @@ export default function Footer() {
     <>
       {windowWidth > 1280 ? (
         <footer
+          //  desktop's footer
           className="flex items-center justify-center py-5 bg-gray-900 text-gray-200 text-xs h-24"
           style={{ color: "#D3D3D3" }}
         >
           <div className="flex mx-10" style={{ marginRight: "5vh" }}>
             <div className="pr-5" style={{ borderRight: "1px solid #D3D3D3" }}>
-              <a href="#">關於 STYLiSH</a>
+              <a href="/">關於 STYLiSH</a>
             </div>
             <div
               className=" ml-5 pr-5"
               style={{ borderRight: "1px solid #D3D3D3" }}
             >
-              <a href="#">服務條款</a>
+              <a href="/">服務條款</a>
             </div>
             <div
               className=" ml-5 pr-5"
               style={{ borderRight: "1px solid #D3D3D3" }}
             >
-              <a href="#">隱私政策</a>
+              <a href="/">隱私政策</a>
             </div>
             <div
               className=" ml-5 pr-5"
               style={{ borderRight: "1px solid #D3D3D3" }}
             >
-              <a href="#">聯絡我們</a>
+              <a href="/">聯絡我們</a>
             </div>
             <div className=" ml-5 pr-5">
-              <a href="#">FAQ</a>
+              <a href="/">FAQ</a>
             </div>
           </div>
 
@@ -65,6 +66,7 @@ export default function Footer() {
           </div>
         </footer>
       ) : (
+        // mobile's footer
         <footer className="bg-gray-900 text-gray-200 text-xs h-auto">
           <div className="py-5 flex">
             <div className="flex w-3/5">
