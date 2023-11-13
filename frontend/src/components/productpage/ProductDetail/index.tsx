@@ -132,18 +132,18 @@ export default function ProductDetail({ product }: { product: Product }) {
                 <div className="text-sm text-center border-r-2 pr-2 border-gray-400">
                   數量
                 </div>
-                <div className="flex ml-3 border-2 w-24">
+                <div className="flex ml-3 border-2 select-none w-24">
                   <div
                     className="flex-1 text-center cursor-pointer"
                     onClick={() => {
-                      setAmount(amount - 1);
+                      if (amount > 0) setAmount(amount - 1);
                     }}
                   >
                     -
                   </div>
                   <div className="flex-1 text-center">{amount}</div>
                   <div
-                    className="flex-1 text-center  cursor-pointer"
+                    className="flex-1 text-center select-none cursor-pointer"
                     onClick={() => {
                       setAmount(amount + 1);
                     }}

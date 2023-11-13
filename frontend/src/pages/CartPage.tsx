@@ -38,46 +38,51 @@ export default function CartPage() {
       </div>
       <div className="flex justify-center mt-2">
         <div className="flex-col w-4/5 border border-gray-400 border-solid border-1">
-          {cartProducts.length > 0 &&
-            cartProducts.map((product) => (
-              <div className="flex">
-                <div className="w-2/5 font-bold p-5">
-                  <div className="flex">
-                    <div className="w-1/3">
-                      <img src={product.main_image} className="w-full" alt="" />
-                    </div>
-                    <div className="w-2/3 ml-2">
-                      <div className="font-bold mb-2">{product.title}</div>
-                      <div className="text-sm text-gray-500">
-                        {product.product_id}
+          {cartProducts.length > 0
+            ? cartProducts.map((product) => (
+                <div className="flex">
+                  <div className="w-2/5 font-bold p-5">
+                    <div className="flex">
+                      <div className="w-1/3">
+                        <img
+                          src={product.main_image}
+                          className="w-full"
+                          alt=""
+                        />
                       </div>
-                      <div className="">
-                        <div className="text-xs my-3">
-                          顏色 | {product.color_name}
+                      <div className="w-2/3 ml-2">
+                        <div className="font-bold mb-2">{product.title}</div>
+                        <div className="text-sm text-gray-500">
+                          {product.product_id}
                         </div>
-                        <div className="text-xs my-3">
-                          尺寸 | {product.size}
+                        <div className="">
+                          <div className="text-xs my-3">
+                            顏色 | {product.color_name}
+                          </div>
+                          <div className="text-xs my-3">
+                            尺寸 | {product.size}
+                          </div>
                         </div>
                       </div>
                     </div>
+                  </div>
+                  <div className="flex w-3/5">
+                    <div className="w-1/4 font-bold flex items-center justify-center">
+                      <select name="" id="" className="border border-black">
+                        <option value="">{product.qty}</option>
+                      </select>
+                    </div>
+                    <div className="w-1/4 font-bold flex items-center justify-center">
+                      TWD.{product.price}
+                    </div>
+                    <div className="w-1/4 font-bold flex items-center justify-center">
+                      TWD.{product.price * product.qty}
+                    </div>
+                    <div className="w-1/4 font-bold text-center"></div>
                   </div>
                 </div>
-                <div className="flex w-3/5">
-                  <div className="w-1/4 font-bold flex items-center justify-center">
-                    <select name="" id="" className="border border-black">
-                      <option value="">{product.qty}</option>
-                    </select>
-                  </div>
-                  <div className="w-1/4 font-bold flex items-center justify-center">
-                    TWD.{product.price}
-                  </div>
-                  <div className="w-1/4 font-bold flex items-center justify-center">
-                    TWD.{product.price * product.qty}
-                  </div>
-                  <div className="w-1/4 font-bold text-center"></div>
-                </div>
-              </div>
-            ))}
+              ))
+            : "*購物車是空的"}
         </div>
       </div>
       <div className="flex justify-center mt-5">

@@ -35,6 +35,7 @@ const signup = async (user) => {
       `SELECT * FROM user WHERE email = ?`,
       [user.email],
       (err, rows) => {
+        connection.end();
         if (rows.length > 0) {
           reject("user already exists");
         }
@@ -63,6 +64,7 @@ const signupByGoogle = async (user) => {
 
         console.log(user);
         connection.query(`INSERT INTO user SET ?`, [user], (err, result) => {
+          connection.end();
           if (err) {
             reject(err);
           }
@@ -89,6 +91,7 @@ const signin = async (email, password) => {
       `SELECT * FROM user WHERE email = ?`,
       [email],
       (err, rows, fields) => {
+        connection.end();
         if (err) {
           reject(err);
         }
@@ -120,6 +123,7 @@ const signinByGoogle = async (email) => {
       `SELECT * FROM user WHERE email = ?`,
       [email],
       (err, rows, fields) => {
+        connection.end();
         if (err) {
           reject(err);
         }
@@ -145,6 +149,7 @@ const getUserById = async (id) => {
 
   return new Promise((resolve, reject) => {
     connection.query(`SELECT * FROM user WHERE id = ?`, [id], (err, rows) => {
+      connection.end();
       if (err) {
         reject(err);
       }

@@ -39,6 +39,7 @@ const getProducts = (productType, pageSize, startIndex) => {
           } OFFSET ${startIndex}`;
 
     connection.query(query, (err, rows) => {
+      connection.end();
       console.log(rows);
       if (err) {
         reject(err);
@@ -66,6 +67,7 @@ const getSearchProducts = (keyword, pageSize, startIndex) => {
       } OFFSET ${startIndex}`,
       [`%${keyword}%`],
       (err, rows) => {
+        connection.end();
         if (err) {
           reject(err);
         }
@@ -93,6 +95,7 @@ const getProductDetails = (productId) => {
         "SELECT * FROM product WHERE id = ?",
         [productId],
         (err, rows, fields) => {
+          connection.end();
           if (err) {
             reject(err);
           }
@@ -126,6 +129,7 @@ const getProductDetails = (productId) => {
               "SELECT * FROM product WHERE id = ?",
               [productId],
               (err, rows) => {
+                connection.end();
                 if (err) {
                   reject(err);
                 }
@@ -178,6 +182,7 @@ const createProduct = (product) => {
         product["variants"],
       ],
       (err, result) => {
+        connection.end();
         if (err) {
           reject(err);
         }

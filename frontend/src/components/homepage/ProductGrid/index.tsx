@@ -48,7 +48,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
   return (
     <>
       <div className="my-16 flex justify-center w-full">
-        <div className={windowWidth > 1280 ? "w-4/5" : ""}>
+        <div className="w-4/5">
           <div
             className={
               "grid " + (windowWidth > 1280 ? "grid-cols-3" : "m-5 grid-cols-2")
