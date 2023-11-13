@@ -12,8 +12,11 @@ export default function ProductDetail({ product }: { product: Product }) {
   function addToCart() {
     const data = {
       product_id: product.id,
-      color_code: selectedColor,
+      color_name: selectedColor,
       size: selectedSize,
+      main_image: product.main_image,
+      title: product.title,
+      price: product.price,
       qty: amount,
     };
     const cart = storage.getItem("cart");
@@ -61,9 +64,9 @@ export default function ProductDetail({ product }: { product: Product }) {
                         className="p-1 cursor-pointer flex justify-center items-center mr-2"
                         style={{
                           borderWidth:
-                            selectedColor === color.code ? "2px" : "0px",
+                            selectedColor === color.name ? "2px" : "0px",
                           borderColor:
-                            selectedColor === color.code
+                            selectedColor === color.name
                               ? "gray"
                               : "transparent",
                         }}
@@ -72,7 +75,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                           key={color.code}
                           className="w-6 h-6  border border-black"
                           onClick={() => {
-                            setSelectedColor(color.code);
+                            setSelectedColor(color.name);
                           }}
                           style={{
                             backgroundColor: `#${color.code}`,

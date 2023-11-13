@@ -5,11 +5,7 @@ import useWindowWidth from "../../../hooks/useWindowWidth";
 
 import "./index.css";
 
-type HeaderProps = {
-  selectInfo: [number, string];
-};
-
-export default function Header({ selectInfo, ...props }: HeaderProps) {
+export default function Header() {
   const [isMemberHover, setIsMemberHover] = useState(false);
   const [isCartHover, setIsCartHover] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -82,24 +78,28 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
                   </div>
                 </Link>
               </div>
+
               <div
                 onMouseEnter={() => setIsCartHover(true)}
                 onMouseLeave={() => setIsCartHover(false)}
                 className="flex items-center mx-3 relative"
               >
-                <img
-                  src={
-                    isCartHover
-                      ? "/assets/images/icon-images/cart-hover.png"
-                      : "/assets/images/icon-images/cart.png"
-                  }
-                  className="icon-size object-cover object-center"
-                  alt=""
-                />
-                <div className="absolute bg-red-500 w-4 h-4 flex justify-center text-xs items-center text-white font-bold right-0 bottom-1 rounded-full">
-                  {cartProducts.length}
-                </div>
+                <Link to={"/cart"}>
+                  <img
+                    src={
+                      isCartHover
+                        ? "/assets/images/icon-images/cart-hover.png"
+                        : "/assets/images/icon-images/cart.png"
+                    }
+                    className="icon-size object-cover object-center"
+                    alt=""
+                  />
+                  <div className="absolute bg-red-500 w-4 h-4 flex justify-center text-xs items-center text-white font-bold right-0 bottom-1 rounded-full">
+                    {cartProducts.length}
+                  </div>
+                </Link>
               </div>
+
               <div
                 onMouseEnter={() => setIsMemberHover(true)}
                 onMouseLeave={() => setIsMemberHover(false)}
