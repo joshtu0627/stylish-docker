@@ -109,9 +109,11 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
 
               {!isSearching ? (
                 <div className="flex-1 flex justify-center items-center cursor-pointer-bar">
-                  <div className="w-40 mx-10">
-                    <img src="/assets/images/icon-images/logo.png" alt="" />
-                  </div>
+                  <Link to={"/all"}>
+                    <div className="w-40 mx-10">
+                      <img src="/assets/images/icon-images/logo.png" alt="" />
+                    </div>
+                  </Link>
                 </div>
               ) : (
                 ""
@@ -154,17 +156,19 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
                     }}
                     style={{ width: "60vw" }}
                   ></input>
-                  <div className="m-2">
-                    <img
-                      src="/assets/images/icon-images/search.png"
-                      className="icon-size object-cover object-center mr-5"
-                      alt=""
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        onSelectChange([1, searchText]);
-                      }}
-                    />
-                  </div>
+                  <Link to={`/search?keyword=${searchText}`}>
+                    <div className="m-2">
+                      <img
+                        src="/assets/images/icon-images/search.png"
+                        className="icon-size object-cover object-center mr-5"
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          onSelectChange([1, searchText]);
+                        }}
+                      />
+                    </div>
+                  </Link>
                 </div>
               ) : (
                 ""
@@ -174,26 +178,25 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
             </header>
 
             <div className="h-8 bg-black flex items-center justify-center text-white text-sm text-gray-400  cursor-pointer-bar">
-              <div
-                className="pr-10"
-                style={{ borderRight: "1px solid white" }}
-                onClick={() => onSelectChange([0, "women"])}
-              >
-                女&nbsp;&nbsp;&nbsp;裝
-              </div>
-              <div
-                className="pr-10  ml-10"
-                style={{ borderRight: "1px solid white" }}
-                onClick={() => onSelectChange([0, "men"])}
-              >
-                男&nbsp;&nbsp;&nbsp;裝
-              </div>
-              <div
-                className="pr-10  ml-10"
-                onClick={() => onSelectChange([0, "accessories"])}
-              >
-                配&nbsp;&nbsp;&nbsp;件
-              </div>
+              <Link to={"/women"}>
+                <div
+                  className="pr-10"
+                  style={{ borderRight: "1px solid white" }}
+                >
+                  女&nbsp;&nbsp;&nbsp;裝
+                </div>
+              </Link>
+              <Link to={"/men"}>
+                <div
+                  className="pr-10  ml-10"
+                  style={{ borderRight: "1px solid white" }}
+                >
+                  男&nbsp;&nbsp;&nbsp;裝
+                </div>
+              </Link>
+              <Link to={"/accessories"}>
+                <div className="pr-10  ml-10">配&nbsp;&nbsp;&nbsp;件</div>
+              </Link>
             </div>
           </div>
         </>

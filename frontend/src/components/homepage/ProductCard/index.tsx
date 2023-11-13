@@ -7,7 +7,11 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <div className="justify-center m-3">
       <Link to={`/products/${product.id}`}>
-        <img src={product.main_image} className="w-full cursor-pointer"></img>
+        <img
+          src={product.main_image}
+          className="cursor-pointer"
+          style={{ width: "50vw", height: "auto" }}
+        ></img>
       </Link>
       <div className="flex justify-left mt-2 my-2 br ">
         {product.colors.length > 0 &&

@@ -51,7 +51,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
         <div className={windowWidth > 1280 ? "w-4/5" : ""}>
           <div
             className={
-              "grid " + (windowWidth > 1280 ? "grid-cols-3" : " grid-cols-2")
+              "grid " + (windowWidth > 1280 ? "grid-cols-3" : "m-5 grid-cols-2")
             }
           >
             {data?.pages.map((page, i) => (

@@ -8,7 +8,7 @@ import SearchResultPage from "./pages/SearchResultPage";
 import "./App.css";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 1000 * 60 } },
+  defaultOptions: { queries: { staleTime: Infinity } },
 });
 function App() {
   return (
