@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
+import { Link } from "react-router-dom";
 import useWindowWidth from "../../../hooks/useWindowWidth";
 
 import "./index.css";
 
 type HeaderProps = {
   selectInfo: [number, string];
-  onSelectChange: (select: [number, string]) => void;
 };
 
-export default function Header({
-  selectInfo,
-  onSelectChange,
-  ...props
-}: HeaderProps) {
+export default function Header({ selectInfo, ...props }: HeaderProps) {
   const [isMemberHover, setIsMemberHover] = useState(false);
   const [isCartHover, setIsCartHover] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -29,30 +25,25 @@ export default function Header({
           <header className="flex py-5 bg-white text-black h-20 w-full">
             {/* left side of the header */}
             <div className="flex-1 flex justify-center items-center cursor-pointer-bar">
-              <div className="w-40 mx-10">
-                <img src="/assets/images/icon-images/logo.png" alt="" />
-              </div>
-              <div
-                className="mx-5 animated-btn xl:ml-[3.5rem]"
-                onClick={() => onSelectChange([0, "women"])}
-              >
-                {/* &nbsp; is for space */}
-                女&nbsp;&nbsp;&nbsp;裝
-              </div>
+              <Link to={"/all"}>
+                <div className="w-40 mx-10">
+                  <img src="/assets/images/icon-images/logo.png" alt="" />
+                </div>
+              </Link>
+              <Link to={"/women"}>
+                <div className="mx-5 animated-btn xl:ml-[3.5rem]">
+                  {/* &nbsp; is for space */}
+                  女&nbsp;&nbsp;&nbsp;裝
+                </div>
+              </Link>
               |
-              <div
-                className="mx-5 animated-btn"
-                onClick={() => onSelectChange([0, "men"])}
-              >
-                男&nbsp;&nbsp;&nbsp;裝
-              </div>
+              <Link to={"/men"}>
+                <div className="mx-5 animated-btn">男&nbsp;&nbsp;&nbsp;裝</div>
+              </Link>
               |
-              <div
-                className="mx-5 animated-btn"
-                onClick={() => onSelectChange([0, "accessories"])}
-              >
-                配&nbsp;&nbsp;&nbsp;件
-              </div>
+              <Link to={"/accessories"}>
+                <div className="mx-5 animated-btn">配&nbsp;&nbsp;&nbsp;件</div>
+              </Link>
             </div>
 
             <div className="flex-1 flex justify-end mx-5  cursor-pointer-bar">
@@ -66,18 +57,15 @@ export default function Header({
                     setSearchText(e.target.value);
                   }}
                 ></input>
-                <div
-                  className="absolute inset-y-0 right-3 flex items-center pl-3"
-                  onClick={() => {
-                    onSelectChange([1, searchText]);
-                  }}
-                >
-                  <img
-                    src="/assets/images/icon-images/search.png"
-                    className="icon-size object-cover object-center"
-                    alt=""
-                  />
-                </div>
+                <Link to={`/search?keyword=${searchText}`}>
+                  <div className="absolute inset-y-0 right-3 flex items-center pl-3">
+                    <img
+                      src="/assets/images/icon-images/search.png"
+                      className="icon-size object-cover object-center"
+                      alt=""
+                    />
+                  </div>
+                </Link>
               </div>
               <div
                 onMouseEnter={() => setIsCartHover(true)}

@@ -11,19 +11,19 @@ type ProductGridProps = {
 };
 
 async function fetchProducts(selectInfo: [number, string], pageParam: number) {
-  if (selectInfo[0] === 0) {
-    const response = await fetch(
-      `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=${pageParam}`
-    );
-    response.data = await response.json();
-    return response.data;
-  } else {
-    const response = await fetch(
-      `https://13.236.23.10:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=${pageParam}`
-    );
-    response.data = await response.json();
-    return response.data;
+  let url = "";
+  console.log("selectInfo", selectInfo);
+
+  if (selectInfo[0] === 1 && selectInfo[1] === "all") {
+    url = `https://13.236.23.10:8000/api/1.0/products/all?paging=${pageParam}`;
+  } else if (selectInfo[0] === 1) {
+    url = `https://13.236.23.10:8000/api/1.0/products/${selectInfo[1]}?paging=${pageParam}`;
+  } else if (selectInfo[0] == 2) {
+    url = `https://13.236.23.10:8000/api/1.0/products/search?keyword=${selectInfo[1]}&paging=${pageParam}`;
   }
+  const response = await fetch(url);
+  response.data = await response.json();
+  return response.data;
 }
 
 export default function ProductGrid({ selectInfo }: ProductGridProps) {
@@ -31,13 +31,12 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
     /* Optional options */
     threshold: 0,
   });
-  const { data, status, error, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["products", selectInfo],
-      queryFn: ({ pageParam = 0 }) => fetchProducts(selectInfo, pageParam),
-      initialPageParam: 0,
-      getNextPageParam: (lastPage) => lastPage.next_paging,
-    });
+  const { data, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["products", selectInfo],
+    queryFn: ({ pageParam = 0 }) => fetchProducts(selectInfo, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.next_paging,
+  });
   const windowWidth = useWindowWidth();
 
   useEffect(() => {

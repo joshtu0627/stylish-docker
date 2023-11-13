@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import Header from "../components/common/Header";
 import Banner from "../components/homepage/Banner";
@@ -8,24 +8,16 @@ import Footer from "../components/common/Footer";
 
 type SelectInfo = [number, string];
 
-export default function HomePage() {
+export default function SearchResultPage() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const keyword = searchParams.get("keyword");
+
   const [selectInfo, setSelectInfo] = useState<SelectInfo>([0, ""]);
 
-  const { category } = useParams();
-  const navigate = useNavigate();
-
   useEffect(() => {
-    if (!category) {
-      navigate("/all");
-      console.log("redirect");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (category) {
-      setSelectInfo([1, category]);
-    }
-  }, [category]);
+    setSelectInfo([2, keyword]);
+  }, [keyword]);
 
   return (
     <>

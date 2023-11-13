@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import Product from "../../../types/Product";
 
 export default function ProductCard({ product }: { product: Product }) {
-  console.log(product);
-
   return (
     <div className="justify-center m-3">
       <Link to={`/products/${product.id}`}>

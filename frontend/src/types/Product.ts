@@ -9,7 +9,10 @@ interface Product {
   place: string;
   note: string;
   story: string;
-  colors: string[];
+  colors: {
+    code: string;
+    name: string;
+  }[];
   sizes: string[];
   variants: {
     color_code: string;
