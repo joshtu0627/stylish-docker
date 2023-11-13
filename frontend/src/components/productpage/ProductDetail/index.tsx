@@ -4,6 +4,38 @@ import Product from "../../../types/Product";
 
 export default function ProductDetail({ product }: { product: Product }) {
   const [amount, setAmount] = useState(0);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+
+  const storage = window.localStorage;
+
+  function addToCart() {
+    const data = {
+      product_id: product.id,
+      color_code: selectedColor,
+      size: selectedSize,
+      qty: amount,
+    };
+    const cart = storage.getItem("cart");
+    if (cart) {
+      const cartArray = JSON.parse(cart);
+      cartArray.push(data);
+      storage.setItem("cart", JSON.stringify(cartArray));
+    } else {
+      const cartArray = [];
+      cartArray.push(data);
+      storage.setItem("cart", JSON.stringify(cartArray));
+    }
+
+    const event = new Event("customStorageChange");
+    window.dispatchEvent(event);
+    setAmount(0);
+    setSelectedColor("");
+    setSelectedSize("");
+
+    alert("已加入購物車");
+    // alert(JSON.stringify(JSON.parse(storage.getItem("cart") as string)));
+  }
 
   return (
     <>
@@ -26,10 +58,27 @@ export default function ProductDetail({ product }: { product: Product }) {
                   {product.colors.length > 0 &&
                     product.colors.map((color) => (
                       <div
-                        key={color.code}
-                        className="w-6 h-6 mr-2 border border-black"
-                        style={{ backgroundColor: `#${color.code}` }}
-                      ></div>
+                        className="p-1 cursor-pointer flex justify-center items-center mr-2"
+                        style={{
+                          borderWidth:
+                            selectedColor === color.code ? "2px" : "0px",
+                          borderColor:
+                            selectedColor === color.code
+                              ? "gray"
+                              : "transparent",
+                        }}
+                      >
+                        <div
+                          key={color.code}
+                          className="w-6 h-6  border border-black"
+                          onClick={() => {
+                            setSelectedColor(color.code);
+                          }}
+                          style={{
+                            backgroundColor: `#${color.code}`,
+                          }}
+                        ></div>
+                      </div>
                     ))}
                 </div>
               </div>
@@ -41,24 +90,36 @@ export default function ProductDetail({ product }: { product: Product }) {
                   {product.sizes.length > 0 &&
                     product.sizes.map((size) => (
                       <div
-                        key={size}
-                        className="w-6 h-6 mr-2 border text-xs font-bold justify-center rounded-full flex items-center"
+                        className="p-1 cursor-pointer mr-2 rounded-full flex justify-center items-center mr-2"
                         style={{
-                          color:
-                            size === "S"
-                              ? `#FFFFFF`
-                              : size === "M"
-                              ? `#000000`
-                              : `#D0D0D0`,
-                          backgroundColor:
-                            size === "S"
-                              ? `#000000`
-                              : size === "M"
-                              ? `#ECECEC`
-                              : `#F0F0F0`,
+                          borderWidth: selectedSize === size ? "2px" : "0px",
+                          borderColor:
+                            selectedSize === size ? "gray" : "transparent",
                         }}
                       >
-                        {size}
+                        <div
+                          key={size}
+                          className="w-6 h-6 border text-xs font-bold justify-center rounded-full flex items-center"
+                          onClick={() => {
+                            setSelectedSize(size);
+                          }}
+                          style={{
+                            color:
+                              size === "S"
+                                ? `#FFFFFF`
+                                : size === "M"
+                                ? `#000000`
+                                : `#D0D0D0`,
+                            backgroundColor:
+                              size === "S"
+                                ? `#000000`
+                                : size === "M"
+                                ? `#ECECEC`
+                                : `#F0F0F0`,
+                          }}
+                        >
+                          {size}
+                        </div>
                       </div>
                     ))}
                 </div>
@@ -89,7 +150,12 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </div>
               </div>
 
-              <div className="bg-black h-10 text-white justify-center flex items-center">
+              <div
+                className="bg-black h-10 text-white justify-center flex items-center cursor-pointer"
+                onClick={() => {
+                  addToCart();
+                }}
+              >
                 加入購物車
               </div>
 

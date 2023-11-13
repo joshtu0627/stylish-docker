@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import useWindowWidth from "../../../hooks/useWindowWidth";
@@ -14,8 +14,23 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
   const [isCartHover, setIsCartHover] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [cartProducts, setCartProducts] = useState([]);
 
   const windowWidth = useWindowWidth();
+
+  const storage = window.localStorage;
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setCartProducts(JSON.parse(storage.getItem("cart") || "[]"));
+    };
+    handleStorageChange();
+    window.addEventListener("customStorageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("customStorageChange", handleStorageChange);
+    };
+  }, []);
 
   return (
     <>
@@ -70,7 +85,7 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
               <div
                 onMouseEnter={() => setIsCartHover(true)}
                 onMouseLeave={() => setIsCartHover(false)}
-                className="flex items-center mx-3"
+                className="flex items-center mx-3 relative"
               >
                 <img
                   src={
@@ -81,6 +96,9 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
                   className="icon-size object-cover object-center"
                   alt=""
                 />
+                <div className="absolute bg-red-500 w-4 h-4 flex justify-center text-xs items-center text-white font-bold right-0 bottom-1 rounded-full">
+                  {cartProducts.length}
+                </div>
               </div>
               <div
                 onMouseEnter={() => setIsMemberHover(true)}
@@ -163,9 +181,6 @@ export default function Header({ selectInfo, ...props }: HeaderProps) {
                         className="icon-size object-cover object-center mr-5"
                         alt=""
                         style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          onSelectChange([1, searchText]);
-                        }}
                       />
                     </div>
                   </Link>
