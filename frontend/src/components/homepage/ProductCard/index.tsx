@@ -10,7 +10,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <Link to={`/products/${product.id}`}>
           <img
             src={product.main_image}
-            className="cursor-pointer w-full h-full object-cover"
+            className="hover:scale-110 hover:shadow-2xl  transition-transform duration-300 cursor-pointer w-full h-full object-cover"
           ></img>
         </Link>
       </div>

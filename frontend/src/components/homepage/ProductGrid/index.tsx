@@ -13,7 +13,7 @@ type ProductGridProps = {
 async function fetchProducts(selectInfo: [number, string], pageParam: number) {
   let url = "";
   console.log("selectInfo", selectInfo);
-
+  await new Promise((r) => setTimeout(r, 400));
   if (selectInfo[0] === 1 && selectInfo[1] === "all") {
     url = `https://13.236.23.10:8000/api/1.0/products/all?paging=${pageParam}`;
   } else if (selectInfo[0] === 1) {
@@ -31,7 +31,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
     /* Optional options */
     threshold: 0,
   });
-  const { data, fetchNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["products", selectInfo],
     queryFn: ({ pageParam = 0 }) => fetchProducts(selectInfo, pageParam),
     initialPageParam: 0,
@@ -49,6 +49,7 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
     <>
       <div className="my-16 flex justify-center w-full">
         <div className="w-4/5">
+          {isFetching}
           <div
             className={
               "grid " + (windowWidth > 1280 ? "grid-cols-3" : "m-5 grid-cols-2")
@@ -61,6 +62,20 @@ export default function ProductGrid({ selectInfo }: ProductGridProps) {
                 ))}
               </>
             ))}
+
+            {isFetching && (
+              <>
+                {Array(6)
+                  .fill(0)
+                  .map((_, i) => (
+                    <div className="animate-pulse mx-5 flex flex-col justify-center">
+                      <div className="w-full h-96  bg-gray-200 rounded-2xl"></div>
+                      <div className="w-full mt-5 bg-gray-200 animate-pulse h-7 rounded-2xl"></div>
+                      <div className="w-3/4 my-2 bg-gray-200 animate-pulse h-7 rounded-2xl"></div>
+                    </div>
+                  ))}
+              </>
+            )}
           </div>
         </div>
       </div>
