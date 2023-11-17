@@ -17,9 +17,10 @@ export default function ProductPage() {
       .then((res) => res.json())
       .then((data) => {
         setProduct(data.data);
+        console.log("data", data.data);
       })
       .then(() => {
-        console.log(product);
+        console.log("product", product);
       });
   }, []);
 

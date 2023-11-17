@@ -11,6 +11,7 @@ interface CartProduct {
   size: string;
   title: string;
   main_image: string;
+  stock: number;
 }
 
 export default CartProduct;

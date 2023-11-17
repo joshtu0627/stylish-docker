@@ -18,8 +18,42 @@ export default function CartPage() {
   const storage = window.localStorage;
 
   useEffect(() => {
+    console.log("storage", storage.getItem("cart"));
+
     setCartProducts(JSON.parse(storage.getItem("cart") || "[]"));
-  });
+  }, []);
+
+  function deleteProduct(id: number) {
+    console.log("id", id);
+
+    storage.setItem(
+      "cart",
+      JSON.stringify(
+        cartProducts.filter((product) => product.product_id !== id)
+      )
+    );
+    const event = new Event("customStorageChange");
+    window.dispatchEvent(event);
+    console.log();
+
+    setCartProducts(JSON.parse(storage.getItem("cart") || "[]"));
+  }
+
+  function setAmount(amount: number, id: number) {
+    const newCartProducts = cartProducts.map((product) => {
+      if (product.product_id === id) {
+        return { ...product, qty: amount };
+      } else {
+        return product;
+      }
+    });
+
+    storage.setItem("cart", JSON.stringify(newCartProducts));
+    const event = new Event("customStorageChange");
+    window.dispatchEvent(event);
+
+    setCartProducts(JSON.parse(storage.getItem("cart") || "[]"));
+  }
 
   return (
     <>
@@ -68,8 +102,20 @@ export default function CartPage() {
                   </div>
                   <div className="flex w-3/5">
                     <div className="w-1/4 font-bold flex items-center justify-center">
-                      <select name="" id="" className="border border-black">
-                        <option value="">{product.qty}</option>
+                      <select
+                        name=""
+                        id=""
+                        className="border border-black"
+                        onChange={(e) => {
+                          setAmount(e.target.value, product.product_id);
+                        }}
+                        value={product.qty}
+                      >
+                        {Array.from({ length: product.stock }, (_, index) => (
+                          <option key={index + 1} value={index + 1}>
+                            {index + 1}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className="w-1/4 font-bold flex items-center justify-center">
@@ -78,7 +124,18 @@ export default function CartPage() {
                     <div className="w-1/4 font-bold flex items-center justify-center">
                       TWD.{product.price * product.qty}
                     </div>
-                    <div className="w-1/4 font-bold text-center"></div>
+                    <div className="w-1/4 font-bold flex items-center justify-center cursor-pointer">
+                      <div
+                        onClick={() => {
+                          deleteProduct(product.product_id);
+                        }}
+                      >
+                        <img
+                          src="/assets/images/icon-images/cart-remove.png"
+                          alt=""
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))

@@ -1,7 +1,26 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import useWindowWidth from "../../../hooks/useWindowWidth";
 
 export default function Footer() {
   const windowWidth = useWindowWidth();
+
+  const [cartProducts, setCartProducts] = useState([]);
+
+  const storage = window.localStorage;
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setCartProducts(JSON.parse(storage.getItem("cart") || "[]"));
+    };
+    handleStorageChange();
+    window.addEventListener("customStorageChange", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("customStorageChange", handleStorageChange);
+    };
+  }, []);
 
   return (
     <>
@@ -120,11 +139,19 @@ export default function Footer() {
           </div>
           <div className="flex">
             <div className="flex-1 flex p-4 text-center items-center justify-center">
-              <img
-                src="/assets/images/icon-images/cart.png"
-                style={{ filter: "brightness(5)" }}
-              ></img>
-              <div>購物車</div>
+              <Link to={"/cart"}>
+                <div className="relative">
+                  <img
+                    src="/assets/images/icon-images/cart.png"
+                    style={{ filter: "brightness(5)" }}
+                  ></img>
+                  <div className="absolute text-black bg-red-500 w-5 h-5 flex justify-center text-xs items-center text-white font-bold right-0 bottom-1 rounded-full">
+                    {cartProducts.length}
+                  </div>
+                </div>
+
+                <div>購物車</div>
+              </Link>
             </div>
 
             <div className="flex-1 flex p-4 text-center items-center justify-center">
