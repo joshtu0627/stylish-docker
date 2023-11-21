@@ -6,6 +6,7 @@
 interface CartProduct {
   id: number;
   color_name: string;
+  color_code: string;
   price: number;
   qty: number;
   size: string;

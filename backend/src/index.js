@@ -33,7 +33,7 @@ const options = {
 
 const app = express();
 
-const server = https.createServer(options, app);
+// const server = https.createServer(options, app);
 
 // enable session
 app.use(
@@ -72,7 +72,7 @@ app.use(
   }
 );
 
-server.listen(8000, () => {
+app.listen(8000, () => {
   console.log(env.SECRET_KEY);
   console.log("Server is running on port https://127.0.0.1:8000/api/1.0");
   console.log();

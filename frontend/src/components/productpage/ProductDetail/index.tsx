@@ -50,6 +50,7 @@ export default function ProductDetail({ product }: { product: Product }) {
     const data = {
       product_id: product.id,
       color_name: selectedColor,
+      color_code: selectedColorCode,
       size: selectedSize,
       main_image: product.main_image,
       title: product.title,
@@ -85,6 +86,7 @@ export default function ProductDetail({ product }: { product: Product }) {
     window.dispatchEvent(event);
     setAmount(0);
     setSelectedColor("");
+    setSelectedColorCode("");
     setSelectedSize("");
 
     alert("已加入購物車");
@@ -95,27 +97,27 @@ export default function ProductDetail({ product }: { product: Product }) {
     <>
       {product.colors ? (
         <>
-          <div className="mt-28 flex justify-center">
+          <div className="flex justify-center mt-28">
             <div className="flex w-2/5">
               <div className="w-3/5">
                 <img src={product.main_image} className="w-full" alt="" />
               </div>
               <div className="w-2/5 p-5 ">
-                <div className="text-xl font-bold mb-2">{product.title}</div>
+                <div className="mb-2 text-xl font-bold">{product.title}</div>
                 <div className="text-sm text-gray-500">{product.id}</div>
-                <div className="text-xl font-bold my-3">
+                <div className="my-3 text-xl font-bold">
                   TWD.{product.price}
                 </div>
-                <div className="border-t-2 border-gray-400 my-3"></div>
+                <div className="my-3 border-t-2 border-gray-400"></div>
                 <div className="flex items-center my-3">
-                  <div className="text-sm text-center border-r-2 pr-2 border-gray-400">
+                  <div className="pr-2 text-sm text-center border-r-2 border-gray-400">
                     顏色
                   </div>
-                  <div className="flex itmes-center ml-3">
+                  <div className="flex ml-3 itmes-center">
                     {product.colors.length > 0 &&
                       product.colors.map((color) => (
                         <div
-                          className="p-1 cursor-pointer flex justify-center items-center mr-2"
+                          className="flex items-center justify-center p-1 mr-2 cursor-pointer"
                           style={{
                             borderWidth:
                               selectedColor === color.name ? "2px" : "0px",
@@ -127,7 +129,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                         >
                           <div
                             key={color.code}
-                            className="w-6 h-6  border border-black"
+                            className="w-6 h-6 border border-black"
                             onClick={() => {
                               setSelectedColor(color.name);
                               setSelectedColorCode(color.code);
@@ -141,15 +143,15 @@ export default function ProductDetail({ product }: { product: Product }) {
                   </div>
                 </div>
                 <div className="flex items-center my-3">
-                  <div className="text-sm text-center border-r-2 pr-2 border-gray-400">
+                  <div className="pr-2 text-sm text-center border-r-2 border-gray-400">
                     尺寸
                   </div>
                   {selectedColor && (
-                    <div className="flex itmes-center ml-3">
+                    <div className="flex ml-3 itmes-center">
                       {sizeRemain.length > 0 &&
                         sizeRemain.map((size) => (
                           <div
-                            className="p-1 cursor-pointer mr-2 rounded-full flex justify-center items-center mr-2"
+                            className="flex items-center justify-center p-1 mr-2 rounded-full cursor-pointer"
                             style={{
                               borderWidth:
                                 selectedSize === size ? "2px" : "0px",
@@ -159,7 +161,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                           >
                             <div
                               key={size}
-                              className="w-6 h-6 border text-xs font-bold justify-center rounded-full flex items-center"
+                              className="flex items-center justify-center w-6 h-6 text-xs font-bold border rounded-full"
                               onClick={() => {
                                 setSelectedSize(size);
                               }}
@@ -186,10 +188,10 @@ export default function ProductDetail({ product }: { product: Product }) {
                   )}
                 </div>
                 <div className="flex items-center my-3">
-                  <div className="text-sm text-center border-r-2 pr-2 border-gray-400">
+                  <div className="pr-2 text-sm text-center border-r-2 border-gray-400">
                     數量
                   </div>
-                  <div className="flex ml-3 border-2 select-none w-24">
+                  <div className="flex w-24 ml-3 border-2 select-none">
                     <div
                       className="flex-1 text-center cursor-pointer"
                       onClick={() => {
@@ -200,7 +202,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                     </div>
                     <div className="flex-1 text-center">{amount}</div>
                     <div
-                      className="flex-1 text-center select-none cursor-pointer"
+                      className="flex-1 text-center cursor-pointer select-none"
                       onClick={() => {
                         if (amountRemain > amount) {
                           setAmount(amount + 1);
@@ -251,7 +253,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           </div>
         </>
       ) : (
-        <div className="flex flex-col w-2/5 my-60 gap-5 p-2 mx-auto bg-white select-none sm:p-4 sm:h-64 rounded-2xl sm:flex-row ">
+        <div className="flex flex-col w-2/5 gap-5 p-2 mx-auto bg-white select-none my-60 sm:p-4 sm:h-64 rounded-2xl sm:flex-row ">
           <div className="bg-gray-200 h-60 sm:h-full sm:w-72 rounded-xl animate-pulse"></div>
           <div className="flex flex-col flex-1 gap-5 sm:p-2">
             <div className="flex flex-col flex-1 gap-3">

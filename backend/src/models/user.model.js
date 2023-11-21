@@ -35,7 +35,6 @@ const signup = async (user) => {
       `SELECT * FROM user WHERE email = ?`,
       [user.email],
       (err, rows) => {
-        connection.end();
         if (rows.length > 0) {
           reject("user already exists");
         }
@@ -43,6 +42,8 @@ const signup = async (user) => {
           if (err) {
             reject(err);
           }
+
+          connection.end();
           resolve(result.insertId);
         });
       }

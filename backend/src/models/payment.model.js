@@ -25,7 +25,7 @@ const createTransaction = async (payment, user) => {
   return new Promise(async (resolve, reject) => {
     try {
       await connection.promise().beginTransaction();
-
+      console.log("payment", payment.order);
       for (const item of payment.order.list) {
         const query = `SELECT * FROM product WHERE id = ?`;
         const values = [item.id];
@@ -35,6 +35,8 @@ const createTransaction = async (payment, user) => {
           .query(query, values);
 
         // check if the stock is enough
+        console.log("item", item);
+        console.log("result", result[0]);
         const variantsObj = result[0].variants;
 
         for (let i = 0; i < variantsObj.length; i++) {

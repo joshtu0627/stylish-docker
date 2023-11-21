@@ -7,11 +7,19 @@ import useWindowWidth from "../hooks/useWindowWidth";
 
 import CartProduct from "../types/CartProduct";
 
+interface UserFormData {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  send_time: string;
+}
+
 export default function CartPage() {
   const windowWidth = useWindowWidth();
 
   const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
-  const [userFormData, setUserFormData] = useState({
+  const [userFormData, setUserFormData] = useState<UserFormData>({
     name: "",
     email: "",
     phone: "",
@@ -139,6 +147,27 @@ export default function CartPage() {
   }
 
   function createPayment() {
+    // check input fields are vaild
+    if (
+      !userFormData.name ||
+      !userFormData.phone ||
+      !userFormData.address ||
+      !userFormData.send_time
+    ) {
+      alert("請填寫完整資料");
+      return;
+    }
+
+    if (!/^\d{10}$/.test(userFormData.phone)) {
+      alert("手機號碼格式錯誤");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userFormData.email)) {
+      alert("email格式錯誤");
+      return;
+    }
+
     const tappayStatus = TPDirect.card.getTappayFieldsStatus();
     console.log(tappayStatus);
 
@@ -155,6 +184,66 @@ export default function CartPage() {
       const prime = result.card.prime;
       console.log("prime", prime);
       // 使用 prime 進行支付流程，例如發送給後端服務器
+
+      const data = {
+        prime: prime,
+        order: {
+          shipping: "delivery",
+          payment: "credit_card",
+          subtotal: total,
+          freight: 30,
+          total: total + 30,
+          recipient: {
+            name: userFormData.name,
+            phone: userFormData.phone,
+            email: userFormData.email,
+            address: userFormData.address,
+            time: userFormData.send_time,
+          },
+          list: cartProducts.map((product) => ({
+            id: product.product_id,
+            name: product.title,
+            price: product.price,
+            color: {
+              name: product.color_name,
+              code: product.color_code,
+            },
+            size: product.size,
+            qty: product.qty,
+          })),
+        },
+      };
+
+      console.log("data", data);
+
+      // fetch("https://13.236.23.10:8000/api/1.0/payment/pay-by-tappay", {
+      fetch("http://127.0.0.1:8000/api/1.0/payment/pay-by-tappay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjkyLCJpYXQiOjE3MDA0ODgzNDEsImV4cCI6MTcwMDQ5MTk0MX0.Ej9NhH7SH51bhtntW4MEIIBPbjQPvgwVVP68h69-jug`,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((result) => {
+          console.log("result", result);
+          if (result.error) {
+            alert(result.message);
+            return;
+          }
+          alert("訂單建立成功");
+          storage.removeItem("cart");
+          const event = new Event("customStorageChange");
+          window.dispatchEvent(event);
+          window.location.href =
+            "/thankyou?number=" +
+            result.data.number +
+            "&total=" +
+            { total } +
+            "&time=" +
+            { time };
+        });
     });
   }
 
@@ -180,7 +269,7 @@ export default function CartPage() {
               {cartProducts.length > 0
                 ? cartProducts.map((product) => (
                     <div className="flex">
-                      <div className="w-2/5 font-bold p-5">
+                      <div className="w-2/5 p-5 font-bold">
                         <div className="flex">
                           <div className="w-1/3">
                             <img
@@ -190,17 +279,17 @@ export default function CartPage() {
                             />
                           </div>
                           <div className="w-2/3 ml-2">
-                            <div className="font-bold mb-2">
+                            <div className="mb-2 font-bold">
                               {product.title}
                             </div>
                             <div className="text-sm text-gray-500">
                               {product.product_id}
                             </div>
                             <div className="">
-                              <div className="text-xs my-3">
+                              <div className="my-3 text-xs">
                                 顏色 | {product.color_name}
                               </div>
-                              <div className="text-xs my-3">
+                              <div className="my-3 text-xs">
                                 尺寸 | {product.size}
                               </div>
                             </div>
@@ -208,7 +297,7 @@ export default function CartPage() {
                         </div>
                       </div>
                       <div className="flex w-3/5">
-                        <div className="w-1/4 font-bold flex items-center justify-center">
+                        <div className="flex items-center justify-center w-1/4 font-bold">
                           <select
                             name=""
                             id=""
@@ -228,13 +317,13 @@ export default function CartPage() {
                             )}
                           </select>
                         </div>
-                        <div className="w-1/4 font-bold flex items-center justify-center">
+                        <div className="flex items-center justify-center w-1/4 font-bold">
                           TWD.{product.price}
                         </div>
-                        <div className="w-1/4 font-bold flex items-center justify-center">
+                        <div className="flex items-center justify-center w-1/4 font-bold">
                           TWD.{product.price * product.qty}
                         </div>
-                        <div className="w-1/4 font-bold flex items-center justify-center cursor-pointer">
+                        <div className="flex items-center justify-center w-1/4 font-bold cursor-pointer">
                           <div
                             onClick={() => {
                               deleteProduct(product.product_id);
@@ -254,31 +343,31 @@ export default function CartPage() {
           </div>
           <div className="flex justify-center mt-5">
             <div className="w-4/5">
-              <div className="font-bold mb-2">訂購資料</div>
+              <div className="mb-2 font-bold">訂購資料</div>
               <div className="h-0.5 bg-gray-500"></div>
               <div className="flex-col w-3/5">
-                <div className="flex w-full justify-between mt-5">
+                <div className="flex justify-between w-full mt-5">
                   <div>收件人姓名</div>
                   <input
                     type="text"
                     value={userFormData.name}
-                    className="border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
                     onChange={(e) =>
                       setUserFormData({ ...userFormData, name: e.target.value })
                     }
                   ></input>
                 </div>
-                <div className="text-end text-red-500 font-bold">
+                <div className="font-bold text-red-500 text-end">
                   務必填寫完整收件人姓名，避免包裹無法順利簽收
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div className="flex w-full justify-between mt-5">
+                <div className="flex justify-between w-full mt-5">
                   <div>手機</div>
                   <input
                     type="text"
-                    value={userFormData.name}
-                    className="border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
+                    value={userFormData.phone}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
                     onChange={(e) =>
                       setUserFormData({
                         ...userFormData,
@@ -289,12 +378,12 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div className="flex w-full justify-between mt-5">
+                <div className="flex justify-between w-full mt-5">
                   <div>地址</div>
                   <input
                     type="text"
-                    value={userFormData.name}
-                    className="border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
+                    value={userFormData.address}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
                     onChange={(e) =>
                       setUserFormData({
                         ...userFormData,
@@ -305,34 +394,34 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div className="flex w-full justify-between mt-5">
+                <div className="flex justify-between w-full mt-5">
                   <div>Email</div>
                   <input
                     type="text"
-                    value={userFormData.name}
-                    className="border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
+                    value={userFormData.email}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
                     onChange={(e) =>
                       setUserFormData({
                         ...userFormData,
-                        address: e.target.value,
+                        email: e.target.value,
                       })
                     }
                   ></input>
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div className="flex w-full justify-between mt-5">
+                <div className="flex justify-between w-full mt-5">
                   <div>配送時間</div>
                   <div className="w-3/4">
                     <label>
                       <input
                         type="radio"
                         id="option1"
-                        checked={userFormData.send_time === "08:00-12:00"}
+                        checked={userFormData.send_time === "morning"}
                         onChange={(e) =>
                           setUserFormData({
                             ...userFormData,
-                            send_time: "08:00-12:00",
+                            send_time: "morning",
                           })
                         }
                         className="mr-2"
@@ -343,11 +432,11 @@ export default function CartPage() {
                       <input
                         type="radio"
                         id="option1"
-                        checked={userFormData.send_time === "14:00-18:00"}
+                        checked={userFormData.send_time === "afternoon"}
                         onChange={(e) =>
                           setUserFormData({
                             ...userFormData,
-                            send_time: "14:00-18:00",
+                            send_time: "afternoon",
                           })
                         }
                         className="mr-2"
@@ -372,47 +461,31 @@ export default function CartPage() {
                   </div>
                 </div>
               </div>
-              <div className="font-bold mt-10">訂購資料</div>
+              <div className="mt-10 font-bold">訂購資料</div>
               <div className="h-0.5 bg-gray-500"></div>
+
               <div className="flex-col w-3/5">
-                <div
-                  className="flex w-full justify-between mt-5 tpfield"
-                  id="card-number"
-                >
-                  {/* <div>信用卡號碼</div> */}
-                  {/* <input
-                type="text"
-                className="border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
-              ></input> */}
+                <div className="flex justify-between w-full mt-5">
+                  <div>信用卡號碼</div>
+                  <div className="tpfield" id="card-number"></div>
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div
-                  className="flex w-full justify-between mt-5  tpfield"
-                  id="card-expiration-date"
-                >
-                  {/* <div>有效期限</div>
-              <input
-                type="text"
-                className="expiration-date border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
-              ></input> */}
+                <div className="flex justify-between w-full mt-5">
+                  <div>有效期限</div>
+                  <div className="tpfield" id="card-expiration-date"></div>
                 </div>
               </div>
               <div className="flex-col w-3/5">
-                <div
-                  className="flex w-full justify-between my-5  tpfield"
-                  id="card-ccv"
-                >
-                  {/* <div>安全碼</div>
-              <input
-                type="text"
-                className="ccv border border-gray-300 border-2 w-3/4 rounded-md focus:outline-none"
-              ></input> */}
+                <div className="flex justify-between w-full mt-5">
+                  <div>安全碼</div>
+                  <div className="tpfield" id="card-ccv"></div>
                 </div>
               </div>
+
               <div className="flex justify-end my-10">
                 <div className="w-72">
-                  <div className="flex-col  font-bold">
+                  <div className="flex-col font-bold">
                     <div className="flex justify-between my-3">
                       <div>總金額</div>
                       <div>
@@ -439,7 +512,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div
-                    className="h-16 bg-black mt-14 text-white flex justify-center items-center"
+                    className="flex items-center justify-center h-16 text-white bg-black cursor-pointer mt-14"
                     onClick={() => {
                       createPayment();
                     }}
@@ -456,14 +529,14 @@ export default function CartPage() {
         <>
           <div className="mt-32"></div>
           <div className="flex justify-center">
-            <div className="flex-col w-4/5 font-bold mb-2">
+            <div className="flex-col w-4/5 mb-2 font-bold">
               <div className="flex font-bold">購物車</div>
               <div className="flex-col ">
                 {cartProducts.length > 0
                   ? cartProducts.map((product) => (
                       <div className="flex-col mb-5">
                         <div className="h-0.5 w-full bg-black "> </div>
-                        <div className="w-full font-bold py-5">
+                        <div className="w-full py-5 font-bold">
                           <div className="flex">
                             <div className="w-1/3">
                               <img
@@ -473,22 +546,22 @@ export default function CartPage() {
                               />
                             </div>
                             <div className="w-1/3 ml-2">
-                              <div className="font-bold mb-2">
+                              <div className="mb-2 font-bold">
                                 {product.title}
                               </div>
                               <div className="text-sm text-gray-500">
                                 {product.product_id}
                               </div>
                               <div className="">
-                                <div className="text-xs my-3">
+                                <div className="my-3 text-xs">
                                   顏色 | {product.color_name}
                                 </div>
-                                <div className="text-xs my-3">
+                                <div className="my-3 text-xs">
                                   尺寸 | {product.size}
                                 </div>
                               </div>
                             </div>
-                            <div className="w-1/3 flex justify-end items-start">
+                            <div className="flex items-start justify-end w-1/3">
                               <div
                                 onClick={() => {
                                   deleteProduct(product.product_id);
@@ -504,18 +577,18 @@ export default function CartPage() {
                         </div>
                         <div className="flex-col">
                           <div className="flex">
-                            <div className="w-1/3 flex justify-center">
+                            <div className="flex justify-center w-1/3">
                               數量
                             </div>
-                            <div className="w-1/3 flex justify-center">
+                            <div className="flex justify-center w-1/3">
                               單價
                             </div>
-                            <div className="w-1/3 flex justify-center">
+                            <div className="flex justify-center w-1/3">
                               小計
                             </div>
                           </div>
                           <div className="flex my-3">
-                            <div className="w-1/3 font-bold flex items-center justify-center">
+                            <div className="flex items-center justify-center w-1/3 font-bold">
                               <select
                                 name=""
                                 id=""
@@ -535,10 +608,10 @@ export default function CartPage() {
                                 )}
                               </select>
                             </div>
-                            <div className="w-1/3 font-bold flex items-center justify-center">
+                            <div className="flex items-center justify-center w-1/3 font-bold">
                               TWD.{product.price}
                             </div>
-                            <div className="w-1/3 font-bold flex items-center justify-center">
+                            <div className="flex items-center justify-center w-1/3 font-bold">
                               TWD.{product.price * product.qty}
                             </div>
                           </div>
