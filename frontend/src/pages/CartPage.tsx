@@ -231,8 +231,8 @@ export default function CartPage() {
 
       console.log("data", data);
 
-      // fetch("https://13.236.23.10:8000/api/1.0/payment/pay-by-tappay", {
-      fetch("http://127.0.0.1:8000/api/1.0/payment/pay-by-tappay", {
+      fetch("https://13.236.23.10:8000/api/1.0/payment/pay-by-tappay", {
+        // fetch("http://127.0.0.1:8000/api/1.0/payment/pay-by-tappay", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -837,7 +837,7 @@ export default function CartPage() {
                 </div>
               </div>
               <div
-                className="flex items-center justify-center my-5 h-16 text-white bg-black cursor-pointer mt-14"
+                className="flex items-center justify-center h-16 my-5 text-white bg-black cursor-pointer mt-14"
                 onClick={() => {
                   createPayment();
                 }}
