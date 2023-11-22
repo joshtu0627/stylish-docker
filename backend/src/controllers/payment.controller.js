@@ -22,6 +22,7 @@ import paymentService from "../services/payment.service.js";
  */
 const handlePayment = async (req, res) => {
   try {
+    req.user = 50;
     console.log("req.body", req.body);
     console.log("list", req.body.list);
     // create payment by payment service

@@ -24,6 +24,7 @@ export default function Footer() {
 
   return (
     <>
+      <div className="flex-grow"></div>
       {windowWidth > 1280 ? (
         <footer
           //  desktop's footer

@@ -8,19 +8,25 @@ import useWindowWidth from "../hooks/useWindowWidth";
 
 import CartProduct from "../types/CartProduct";
 
-export default function CartPage() {
+export default function ThankYouPage() {
   const windowWidth = useWindowWidth();
 
-  const { number, total, time } = useParams();
+  const [number, setNumber] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
+  const [time, setTime] = useState<string>("");
 
-  const [cartProducts, setCartProducts] = useState<CartProduct[]>([]);
-  const [userFormData, setUserFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    send_time: "",
-  });
+  useEffect(() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    const number = urlParams.get("number");
+    const total = urlParams.get("total");
+    const time = urlParams.get("time");
+
+    setNumber(number ? parseInt(number) : 0);
+    setTotal(total ? parseInt(total) : 0);
+    setTime(time ? time : "");
+  }, []);
 
   return (
     <>

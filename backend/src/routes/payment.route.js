@@ -21,6 +21,7 @@ router.get("/", (req, res) => {
 
 // handle payment at api/{version}/payment/pay-by-tappay
 // use authMiddleware to protect the route and get user object by token
-router.post("/pay-by-tappay", authMiddleware, paymentController.handlePayment);
+// router.post("/pay-by-tappay", authMiddleware, paymentController.handlePayment);
+router.post("/pay-by-tappay", paymentController.handlePayment);
 
 export default router;

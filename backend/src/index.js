@@ -25,11 +25,11 @@ import "./config/passport.config.js";
 import { env } from "./utils/env.js";
 
 // set up https server
-const options = {
-  key: fs.readFileSync("./ssl/private.key"),
-  cert: fs.readFileSync("./ssl/certificate.crt"),
-  ca: fs.readFileSync("./ssl/ca_bundle.crt"),
-};
+// const options = {
+//   key: fs.readFileSync("./ssl/private.key"),
+//   cert: fs.readFileSync("./ssl/certificate.crt"),
+//   ca: fs.readFileSync("./ssl/ca_bundle.crt"),
+// };
 
 const app = express();
 

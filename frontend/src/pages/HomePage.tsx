@@ -28,11 +28,11 @@ export default function HomePage() {
   }, [category]);
 
   return (
-    <>
+    <div>
       <Header />
       <Banner />
       <ProductGrid selectInfo={selectInfo} />
       <Footer />
-    </>
+    </div>
   );
 }

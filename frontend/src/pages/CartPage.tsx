@@ -27,11 +27,17 @@ export default function CartPage() {
     send_time: "",
   });
 
+  const [payTime, setPayTime] = useState<string>("");
+
   const [total, setTotal] = useState(0);
 
   const storage = window.localStorage;
 
   useEffect(() => {
+    console.log();
+
+    console.log(TPDirect);
+
     console.log("storage", storage.getItem("cart"));
     TPDirect.setupSDK(
       12348,
@@ -115,13 +121,19 @@ export default function CartPage() {
     countTotal();
   }, [cartProducts]);
 
-  function deleteProduct(id: number) {
+  function deleteProduct(id: number, color_name: string, size: string) {
     console.log("id", id);
 
     storage.setItem(
       "cart",
       JSON.stringify(
-        cartProducts.filter((product) => product.product_id !== id)
+        cartProducts.filter((product) => {
+          return (
+            product.product_id !== id ||
+            product.color_name !== color_name ||
+            product.size !== size
+          );
+        })
       )
     );
     const event = new Event("customStorageChange");
@@ -147,6 +159,9 @@ export default function CartPage() {
   }
 
   function createPayment() {
+    // set pay time
+    setPayTime(new Date().toLocaleString());
+
     // check input fields are vaild
     if (
       !userFormData.name ||
@@ -221,7 +236,6 @@ export default function CartPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjkyLCJpYXQiOjE3MDA0ODgzNDEsImV4cCI6MTcwMDQ5MTk0MX0.Ej9NhH7SH51bhtntW4MEIIBPbjQPvgwVVP68h69-jug`,
         },
         body: JSON.stringify(data),
       })
@@ -235,14 +249,17 @@ export default function CartPage() {
           alert("訂單建立成功");
           storage.removeItem("cart");
           const event = new Event("customStorageChange");
+
+          console.log(total, payTime);
+
           window.dispatchEvent(event);
           window.location.href =
-            "/thankyou?number=" +
+            "/thankyou/?number=" +
             result.data.number +
             "&total=" +
-            { total } +
+            total +
             "&time=" +
-            { time };
+            new Date().toLocaleString();
         });
     });
   }
@@ -326,7 +343,11 @@ export default function CartPage() {
                         <div className="flex items-center justify-center w-1/4 font-bold cursor-pointer">
                           <div
                             onClick={() => {
-                              deleteProduct(product.product_id);
+                              deleteProduct(
+                                product.product_id,
+                                product.color_name,
+                                product.size
+                              );
                             }}
                           >
                             <img
@@ -467,7 +488,25 @@ export default function CartPage() {
               <div className="flex-col w-3/5">
                 <div className="flex justify-between w-full mt-5">
                   <div>信用卡號碼</div>
-                  <div className="tpfield" id="card-number"></div>
+                  <div
+                    className="tpfield"
+                    id="card-number"
+                    onBlur={() => {
+                      // alert("blur");
+                      // add password type
+                      const input = document.getElementById(
+                        "card-number"
+                      ) as HTMLInputElement;
+                      input.type = "password";
+                    }}
+                    onFocus={() => {
+                      // remove password type
+                      const input = document.getElementById(
+                        "card-number"
+                      ) as HTMLInputElement;
+                      input.type = "text";
+                    }}
+                  ></div>
                 </div>
               </div>
               <div className="flex-col w-3/5">
@@ -619,6 +658,191 @@ export default function CartPage() {
                       </div>
                     ))
                   : "*購物車是空的"}
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center mt-5">
+            <div className="w-4/5">
+              <div className="mb-2 font-bold">訂購資料</div>
+              <div className="h-0.5 bg-gray-500"></div>
+              <div className="flex-col ">
+                <div className="flex justify-between w-full mt-5">
+                  <div>收件人姓名</div>
+                  <input
+                    type="text"
+                    value={userFormData.name}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
+                    onChange={(e) =>
+                      setUserFormData({
+                        ...userFormData,
+                        name: e.target.value,
+                      })
+                    }
+                  ></input>
+                </div>
+                <div className="font-bold text-red-500 text-end">
+                  務必填寫完整收件人姓名，避免包裹無法順利簽收
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>手機</div>
+                  <input
+                    type="text"
+                    value={userFormData.phone}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
+                    onChange={(e) =>
+                      setUserFormData({
+                        ...userFormData,
+                        phone: e.target.value,
+                      })
+                    }
+                  ></input>
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>地址</div>
+                  <input
+                    type="text"
+                    value={userFormData.address}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
+                    onChange={(e) =>
+                      setUserFormData({
+                        ...userFormData,
+                        address: e.target.value,
+                      })
+                    }
+                  ></input>
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>Email</div>
+                  <input
+                    type="text"
+                    value={userFormData.email}
+                    className="w-3/4 border border-2 border-gray-300 rounded-md focus:outline-none"
+                    onChange={(e) =>
+                      setUserFormData({
+                        ...userFormData,
+                        email: e.target.value,
+                      })
+                    }
+                  ></input>
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>配送時間</div>
+                  <div className="w-3/4">
+                    <label>
+                      <input
+                        type="radio"
+                        id="option1"
+                        checked={userFormData.send_time === "morning"}
+                        onChange={(e) =>
+                          setUserFormData({
+                            ...userFormData,
+                            send_time: "morning",
+                          })
+                        }
+                        className="mr-2"
+                      ></input>
+                      08:00-12:00
+                    </label>
+                    <label className="ml-10">
+                      <input
+                        type="radio"
+                        id="option1"
+                        checked={userFormData.send_time === "afternoon"}
+                        onChange={(e) =>
+                          setUserFormData({
+                            ...userFormData,
+                            send_time: "afternoon",
+                          })
+                        }
+                        className="mr-2"
+                      ></input>
+                      14:00-18:00
+                    </label>
+                    <label className="ml-10">
+                      <input
+                        type="radio"
+                        id="option1"
+                        checked={userFormData.send_time === "不指定"}
+                        onChange={(e) =>
+                          setUserFormData({
+                            ...userFormData,
+                            send_time: "不指定",
+                          })
+                        }
+                        className="mr-2"
+                      ></input>
+                      不指定
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-10 font-bold">訂購資料</div>
+              <div className="h-0.5 bg-gray-500"></div>
+
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>信用卡號碼</div>
+                  <div className="tpfield" id="card-number"></div>
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>有效期限</div>
+                  <div className="tpfield" id="card-expiration-date"></div>
+                </div>
+              </div>
+              <div className="flex-col">
+                <div className="flex justify-between w-full mt-5">
+                  <div>安全碼</div>
+                  <div className="tpfield" id="card-ccv"></div>
+                </div>
+              </div>
+
+              <div className="flex justify-end my-10">
+                <div className="w-72">
+                  <div className="flex-col font-bold">
+                    <div className="flex justify-between my-3">
+                      <div>總金額</div>
+                      <div>
+                        NT.
+                        <span className="text-xl"> {total}</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between my-3">
+                      <div>運費</div>
+                      <div>
+                        NT.
+                        <span className="text-xl"> 30</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-full h-0.5 bg-black"></div>
+                    </div>
+                    <div className="flex justify-between my-3">
+                      <div>應付金額</div>
+                      <div>
+                        NT.
+                        <span className="text-xl"> {total + 30}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="flex items-center justify-center my-5 h-16 text-white bg-black cursor-pointer mt-14"
+                onClick={() => {
+                  createPayment();
+                }}
+              >
+                <div>確 認 付 款</div>
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
 });
 function App() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
@@ -29,7 +29,7 @@ function App() {
           </BrowserRouter>
         </QueryClientProvider>
       }
-    </>
+    </div>
   );
 }
 
