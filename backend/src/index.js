@@ -67,7 +67,7 @@ app.use(
 
 if (!isLocal) {
   // set up https serverconst
-  options = {
+  let options = {
     key: fs.readFileSync("./ssl/private.key"),
     cert: fs.readFileSync("./ssl/certificate.crt"),
     ca: fs.readFileSync("./ssl/ca_bundle.crt"),
